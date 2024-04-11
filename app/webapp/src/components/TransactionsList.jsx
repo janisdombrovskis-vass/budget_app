@@ -1,51 +1,61 @@
 import React, { useState, useEffect } from 'react';
 
 const TransactionsList = () => {
-  const [transactions, setTransactions] = useState([]);
+  // State for incomes and expenses separately
+  const [incomes, setIncomes] = useState([]);
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    async function fetchTransactions() {
+    async function fetchIncomes() {
       try {
-        // Fetch incomes
-        const incomesResponse = await fetch("/odata/v4/budget/Incomes");
-        if (!incomesResponse.ok) {
+        const response = await fetch("/odata/v4/budget/Incomes");
+        if (!response.ok) {
           throw new Error('Network response was not ok for incomes');
         }
-        const incomesData = await incomesResponse.json();
-        const incomesWithTypes = incomesData.value.map(income => ({ ...income, type: 'Income' }));
-
-        // Fetch expenses
-        const expensesResponse = await fetch("/odata/v4/budget/Expenses");
-        if (!expensesResponse.ok) {
-          throw new Error('Network response was not ok for expenses');
-        }
-        const expensesData = await expensesResponse.json();
-        const expensesWithTypes = expensesData.value.map(expense => ({ ...expense, type: 'Expense' }));
-
-        // Combine incomes and expenses with types
-        const combinedTransactions = [...incomesWithTypes, ...expensesWithTypes];
-        console.log(combinedTransactions);
-        setTransactions(combinedTransactions);
+        const data = await response.json();
+        setIncomes(data.value); // Assuming data.value is the array of income transactions
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching incomes:", error);
       }
     }
 
-    // Call the function to fetch and combine transactions
-    fetchTransactions();
+    async function fetchExpenses() {
+      try {
+        const response = await fetch("/odata/v4/budget/Expenses");
+        if (!response.ok) {
+          throw new Error('Network response was not ok for expenses');
+        }
+        const data = await response.json();
+        setExpenses(data.value); // Assuming data.value is the array of expense transactions
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
+    }
+
+    fetchIncomes();
+    fetchExpenses();
   }, []);
 
-  if (!transactions || !Array.isArray(transactions)) return null;
-
   return (
-    <ul>
-      {transactions.map((transaction) => (
-        <li key={transaction.ID}>
-          <strong>{transaction.type}:</strong> {transaction.category} - ${transaction.amount} - {transaction.date}
-          {/* Type added to each transaction display */}
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h2>Incomes</h2>
+      <ul>
+        {incomes.map((income) => (
+          <li key={income.ID}>
+            {income.category} - ${income.amount} - {income.date} - {income.description}
+          </li>
+        ))}
+      </ul>
+
+      <h2>Expenses</h2>
+      <ul>
+        {expenses.map((expense) => (
+          <li key={expense.ID}>
+            {expense.category} - ${expense.amount} - {expense.date} - {expense.description}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
