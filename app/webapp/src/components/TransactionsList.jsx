@@ -1,38 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-
-const List = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const ListItem = styled.li`
-  background: #fff;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
 
 const TransactionsList = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    // TODO: Replace with actual API call
-    setTransactions([
-      { id: 1, type: 'Income', amount: 1000, category: 'Salary' },
-      { id: 2, type: 'Expense', amount: 150, category: 'Groceries' }
-    ]);
+    async function fetchTransactions() {
+      try {
+        // Fetch incomes
+        const incomesResponse = await fetch("/odata/v4/budget/Incomes");
+        if (!incomesResponse.ok) {
+          throw new Error('Network response was not ok for incomes');
+        }
+        const incomesData = await incomesResponse.json();
+        const incomesWithTypes = incomesData.value.map(income => ({ ...income, type: 'Income' }));
+
+        // Fetch expenses
+        const expensesResponse = await fetch("/odata/v4/budget/Expenses");
+        if (!expensesResponse.ok) {
+          throw new Error('Network response was not ok for expenses');
+        }
+        const expensesData = await expensesResponse.json();
+        const expensesWithTypes = expensesData.value.map(expense => ({ ...expense, type: 'Expense' }));
+
+        // Combine incomes and expenses with types
+        const combinedTransactions = [...incomesWithTypes, ...expensesWithTypes];
+        console.log(combinedTransactions);
+        setTransactions(combinedTransactions);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Call the function to fetch and combine transactions
+    fetchTransactions();
   }, []);
 
+  if (!transactions || !Array.isArray(transactions)) return null;
+
   return (
-    <List>
+    <ul>
       {transactions.map((transaction) => (
-        <ListItem key={transaction.id}>
-          {transaction.type} - {transaction.category} - ${transaction.amount}
-        </ListItem>
+        <li key={transaction.ID}>
+          <strong>{transaction.type}:</strong> {transaction.category} - ${transaction.amount} - {transaction.date}
+          {/* Type added to each transaction display */}
+        </li>
       ))}
-    </List>
+    </ul>
   );
 };
 
