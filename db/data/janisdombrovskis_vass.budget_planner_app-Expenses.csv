@@ -1,4 +1,2 @@
-ID;amount;category;date;description
-7hg3b6ee-f2dd-45af-9d2c-82835a1823er;500;"Rent";"2023-04-15";""
-7hg3b6ee-f2dd-45af-9d2c-82835a1823eg;500;"Car Payment";"2023-04-15";""
-7hg3b6ee-f2dd-45af-9d2c-82835a1823eh;500;"Groceries";"2023-04-15";""
+ID;amount;category;date;description;static
+7hg3b6ee-f2dd-45af-9d2c-82835a1823er;500;"Rent";"2023-04-15";"";"Y"

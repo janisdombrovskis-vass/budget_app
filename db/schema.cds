@@ -6,6 +6,7 @@ entity Incomes {
   category : String;
   date : Date;
   description : String;
+  static : String;
 }
 
 entity Expenses {
@@ -14,6 +15,7 @@ entity Expenses {
   category : String;
   date : Date;
   description : String;
+  static : String;
 }
 
 entity Categories {

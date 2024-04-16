@@ -1,86 +1,143 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import ReactiveButton from 'reactive-button';
 
-const Dialog = styled.div`
-  background: #f3f3f3;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 20px;
-`;
+const Dialog = ({ onClose, onSubmit, children }) => (
+  <div style={{
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    padding: '20px',
+    boxShadow: '0px 0px 10px rgba(0,0,0,0.5)',
+    zIndex: 1000
+  }}>
+    {children}
+    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
+      <ReactiveButton onClick={onSubmit} color='primary' style={{ marginRight: '20px' }} idleText='Submit' />
+      <ReactiveButton onClick={onClose} color='dark' idleText='Cancel' />
+    </div>
+  </div>
+);
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
+const AddTransactionDialog = ({ isVisible, onClose, onSubmit }) => (
+  isVisible ? <Dialog onClose={onClose} onSubmit={onSubmit}>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Type:
+        <select style={{ marginLeft: '10px' }}>
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+        </select>
+      </label>
+    </div>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Amount:
+        <input type="number" placeholder="Enter amount" style={{ marginLeft: '10px' }} />
+      </label>
+    </div>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Category:
+        <input type="text" placeholder="Enter category" style={{ marginLeft: '10px' }} />
+      </label>
+    </div>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Date:
+        <input type="date" style={{ marginLeft: '10px' }} />
+      </label>
+    </div>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Description:
+        <input type="text" placeholder="Enter description (optional)" style={{ marginLeft: '10px' }} />
+      </label>
+    </div>
+    <div style={{ marginBottom: '20px' }}>
+      <label>
+        Static Transaction:
+        <input type="checkbox" style={{ marginLeft: '10px' }} />
+      </label>
+    </div>
+  </Dialog> : null
+);
 
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+const AddTransactionButton = () => {
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [buttonState, setButtonState] = useState('idle');
 
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #45a049;
-  }
-`;
-
-const AddTransactionDialog = () => {
-  const [formData, setFormData] = useState({
-    type: '',
-    amount: '',
-    category: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleOpenDialog = () => {
+    setDialogVisible(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Replace with actual API call to add transaction
-    console.log(formData);
+  const handleCloseDialog = () => {
+    setDialogVisible(false);
+  };
+
+  const handleSubmit = async () => {
+    setButtonState('loading');
+    const type = document.querySelector('select').value;
+    const amount = document.querySelector('input[type="number"]').value;
+    const category = document.querySelector('input[type="text"]').value;
+    const date = document.querySelector('input[type="date"]').value;
+    const description = document.querySelectorAll('input[type="text"]')[1].value;
+    const isStatic = document.querySelector('input[type="checkbox"]').checked ? 'Y' : 'N'; // Determine if the transaction is marked as static
+
+    const transactionData = {
+      amount,
+      category,
+      date,
+      description,
+      static: isStatic
+    };
+
+    const apiEndpoint = type === 'Income' ? '/odata/v4/budget/Incomes' : '/odata/v4/budget/Expenses';
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: "post",
+        body: JSON.stringify(transactionData),
+        headers: {
+          "Content-type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        setButtonState('error');
+        throw new Error(`Failed to submit ${type.toLowerCase()}`);
+      }
+
+      setButtonState('success');
+      console.log(`${type} submitted successfully!`);
+      setTimeout(() => setButtonState('idle'), 2000); // Reset button state after 2 seconds
+    } catch (error) {
+      console.error(`Error submitting ${type.toLowerCase()}:`, error);
+      setTimeout(() => setButtonState('idle'), 2000); // Reset button state after 2 seconds
+    }
+
+    handleCloseDialog();
   };
 
   return (
-    <Dialog>
-      <Form onSubmit={handleSubmit}>
-        <Input
-          name="type"
-          placeholder="Type (Income/Expense)"
-          onChange={handleChange}
-          value={formData.type}
-          required
-        />
-        <Input
-          name="amount"
-          type="number"
-          placeholder="Amount"
-          onChange={handleChange}
-          value={formData.amount}
-          required
-        />
-        <Input
-          name="category"
-          placeholder="Category"
-          onChange={handleChange}
-          value={formData.category}
-          required
-        />
-        <Button type="submit">Add Transaction</Button>
-      </Form>
-    </Dialog>
+    <div>
+      <ReactiveButton
+        onClick={handleOpenDialog}
+        color='primary'
+        idleText='Add Transaction'
+        loadingText='Adding...'
+        successText='Added'
+        errorText='Error'
+        buttonState={buttonState}
+      />
+      <AddTransactionDialog
+        isVisible={dialogVisible}
+        onClose={handleCloseDialog}
+        onSubmit={handleSubmit}
+      />
+    </div>
   );
 };
 
-export default AddTransactionDialog;
+export default AddTransactionButton;
