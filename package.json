@@ -23,5 +23,6 @@
     "requires": {
       "multitenancy": true
     }
+    
   }
 }

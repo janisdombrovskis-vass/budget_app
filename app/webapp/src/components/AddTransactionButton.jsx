@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ReactiveButton from 'reactive-button';
+import { Button } from '@ui5/webcomponents-react';
+import "@ui5/webcomponents-icons/dist/AllIcons.js";
 
 const Dialog = ({ onClose, onSubmit, children }) => (
   <div style={{
@@ -14,8 +15,8 @@ const Dialog = ({ onClose, onSubmit, children }) => (
   }}>
     {children}
     <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
-      <ReactiveButton onClick={onSubmit} color='primary' style={{ marginRight: '20px' }} idleText='Submit' />
-      <ReactiveButton onClick={onClose} color='dark' idleText='Cancel' />
+      <Button icon="add" design="Transparent" onClick={onSubmit} style={{ marginRight: '20px' }} />
+      <Button icon="decline" design="Transparent" onClick={onClose} />
     </div>
   </div>
 );
@@ -66,10 +67,10 @@ const AddTransactionDialog = ({ isVisible, onClose, onSubmit }) => (
 
 const AddTransactionButton = () => {
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [buttonState, setButtonState] = useState('idle');
 
   const handleOpenDialog = () => {
     setDialogVisible(true);
+    console.log('a');
   };
 
   const handleCloseDialog = () => {
@@ -77,7 +78,7 @@ const AddTransactionButton = () => {
   };
 
   const handleSubmit = async () => {
-    setButtonState('loading');
+
     const type = document.querySelector('select').value;
     const amount = document.querySelector('input[type="number"]').value;
     const category = document.querySelector('input[type="text"]').value;
@@ -105,16 +106,16 @@ const AddTransactionButton = () => {
       });
 
       if (!response.ok) {
-        setButtonState('error');
+
         throw new Error(`Failed to submit ${type.toLowerCase()}`);
       }
 
-      setButtonState('success');
+
       console.log(`${type} submitted successfully!`);
-      setTimeout(() => setButtonState('idle'), 2000); // Reset button state after 2 seconds
+
     } catch (error) {
       console.error(`Error submitting ${type.toLowerCase()}:`, error);
-      setTimeout(() => setButtonState('idle'), 2000); // Reset button state after 2 seconds
+
     }
 
     handleCloseDialog();
@@ -122,15 +123,7 @@ const AddTransactionButton = () => {
 
   return (
     <div>
-      <ReactiveButton
-        onClick={handleOpenDialog}
-        color='primary'
-        idleText='Add Transaction'
-        loadingText='Adding...'
-        successText='Added'
-        errorText='Error'
-        buttonState={buttonState}
-      />
+      <Button icon="add" design="Transparent" onClick={handleOpenDialog} />
       <AddTransactionDialog
         isVisible={dialogVisible}
         onClose={handleCloseDialog}

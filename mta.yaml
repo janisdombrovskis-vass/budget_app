@@ -25,7 +25,7 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      []
+      - name: budget_tracker-db
 
   - name: budget_tracker-mtx
     type: nodejs
@@ -39,6 +39,8 @@ modules:
       - name: mtx-api
         properties:
           mtx-url: ${default-url}
+    requires:
+      - name: budget_tracker-db
 
 resources:
   - name: budget_tracker-registry
@@ -61,3 +63,8 @@ resources:
           onUnSubscriptionAsync: true
           onUpdateDependenciesAsync: true
           callbackTimeoutMillis: 300000 # Increase if your deployments are taking longer than that
+  - name: budget_tracker-db
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container
