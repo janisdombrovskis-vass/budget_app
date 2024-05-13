@@ -1,2 +1,14 @@
-ID;amount;category;date;description;static
-7hg3b6ee-f2dd-45af-9d2c-82835a1823er;500;"Rent";"2023-04-15";"";"Y"
+ID;user;amount;category;date;description;static
+7hg3b6ee-f2dd-45af-9d2c-82835a1823er;1a81b6ee-kd88-45af-9d2c-64a8131865a1;500;"Rent";"2023-04-05";"";"Y"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e1;1a81b6ee-kd88-45af-9d2c-64a8131865a1;189.50;"Car Payment";"2023-04-05";"";"Y"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e2;1a81b6ee-kd88-45af-9d2c-64a8131865a1;25.99;"Phone Payment";"2023-04-15";"";"Y"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e3;1a81b6ee-kd88-45af-9d2c-64a8131865a1;12.10;"Internet Payment";"2023-04-15";"";"Y"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e4;1a81b6ee-kd88-45af-9d2c-64a8131865a1;15;"Takeaway";"2023-04-20";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e5;1a81b6ee-kd88-45af-9d2c-64a8131865a1;5;"Coffee";"2023-04-20";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e6;1a81b6ee-kd88-45af-9d2c-64a8131865a1;5;"Parking";"2023-04-21";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e7;1a81b6ee-kd88-45af-9d2c-64a8131865a1;25;"Takeaway";"2023-04-21";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e8;1a81b6ee-kd88-45af-9d2c-64a8131865a1;5;"Coffee";"2023-04-22";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a1823e9;1a81b6ee-kd88-45af-9d2c-64a8131865a1;5;"Parking";"2023-04-22";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a182311;1a81b6ee-kd88-45af-9d2c-64a8131865a1;20;"Takeaway";"2023-04-24";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a182312;1a81b6ee-kd88-45af-9d2c-64a8131865a1;150;"Groceries";"2023-04-25";"";"N"
+7hg3b6ee-f2dd-45af-9d2c-82835a182313;1a81b6ee-kd88-45af-9d2c-64a8131865a1;150;"Car Repair";"2023-05-15";"";"N"

@@ -2,6 +2,7 @@ namespace janisdombrovskis_vass.budget_planner_app;
 
 entity Incomes {
   key ID : UUID;
+  user : String;
   amount : Decimal(10,2);
   category : String;
   date : Date;
@@ -11,6 +12,7 @@ entity Incomes {
 
 entity Expenses {
   key ID : UUID;
+  user : String;
   amount : Decimal(10,2);
   category : String;
   date : Date;
@@ -18,8 +20,13 @@ entity Expenses {
   static : String;
 }
 
-entity Categories {
-  key ID : UUID;
+entity Users {
+  key ID : String;
   name : String;
-  type : String; // "Income" or "Expense"
+}
+
+entity Savings {
+  key ID : String;
+  user : String;
+  amount : Decimal(10,2);
 }

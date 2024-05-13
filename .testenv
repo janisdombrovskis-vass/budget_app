@@ -1,0 +1,5 @@
+cds.requires.db.credentials.host = postgres-708425b1-8080-4fad-a6f9-b6ae23c0cac1.ce4jcviyvogb.eu-central-1.rds.amazonaws.com
+cds.requires.db.credentials.port = 3553
+cds.requires.db.credentials.user = d721d874a377
+cds.requires.db.credentials.password = 00f57e0a565ea646b26
+cds.requires.db.credentials.database = gVEzfPsGYGww

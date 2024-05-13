@@ -7,9 +7,12 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^7",
+    "@sap/xssec": "^3.2.18",
     "@sap/cds-mtxs": "^1.9",
     "express": "^4",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "passport": "^0.6.0",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
