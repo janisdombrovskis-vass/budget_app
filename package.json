@@ -11,6 +11,7 @@
     "@sap/cds-mtxs": "^1.9",
     "express": "^4",
     "styled-components": "^6.1.8",
+    "node-fetch": "^3.3.2",
     "passport": "^0.6.0",
     "sqlite3": "^5.0.2"
   },
@@ -18,14 +19,21 @@
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^7"
   },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": ":memory:"
+        }
+      },
+      "auth": "dummy"
+    },
+    "features": {
+      "in_memory_db": true
+    }
+  },
   "scripts": {
     "start": "cds-serve"
-  },
-  "cds": {
-    "profile": "with-mtx-sidecar",
-    "requires": {
-      "multitenancy": true
-    }
-    
   }
 }
