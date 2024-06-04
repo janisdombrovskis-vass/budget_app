@@ -1,1 +1,20 @@
-{}
+{
+    "requires": {
+      "[hybrid]": {
+        "custom-service:postgres-test": {
+          "binding": {
+            "type": "cf",
+            "apiEndpoint": "https://api.cf.eu10.hana.ondemand.com",
+            "org": "ecenta-de",
+            "space": "dev",
+            "instance": "postgres-test",
+            "key": "budget_app_JD",
+            "resolved": false
+          },
+          "vcap": {
+            "name": "custom-service:postgres-test"
+          }
+        }
+      }
+    }
+  }

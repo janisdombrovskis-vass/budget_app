@@ -6,14 +6,15 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@cap-js/postgres": "^1.8.0",
     "@sap/cds": "^7",
-    "@sap/xssec": "^3.2.18",
     "@sap/cds-mtxs": "^1.9",
+    "@sap/xssec": "^3.2.18",
     "express": "^4",
-    "styled-components": "^6.1.8",
     "node-fetch": "^3.3.2",
     "passport": "^0.6.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",

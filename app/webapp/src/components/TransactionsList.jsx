@@ -47,7 +47,7 @@ const TransactionsList = ({ currentUser, dataVersion }) => {
     setTotalExpenses(totalExpenses);
     const categories = Object.entries(categorySum)
       .sort((a, b) => b[1] - a[1]) // Sort by amount, descending
-      .slice(0, 5) // Top 5 categories
+      .slice(0, 10) // Top 5 categories
       .map(([category, amount]) => ({
         category,
         amount,

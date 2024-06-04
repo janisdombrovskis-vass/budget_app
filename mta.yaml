@@ -8,7 +8,7 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
-        - npx cds build --production
+        - npx cds build
         - cp -r db/data gen/srv/data
         - mkdir -p gen/srv/app/webapp
         - cp -r app/webapp/build/. gen/srv/app/webapp
@@ -21,11 +21,14 @@ modules:
     build-parameters:
       builder: npm
       ignore:
-      - node_modules/
+        - node_modules/
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
+    requires:
+      - name: postgres-test
+      - name: budget_tracker-postgres
 
   - name: budget_tracker-mtx
     type: nodejs
@@ -39,7 +42,19 @@ modules:
       - name: mtx-api
         properties:
           mtx-url: ${default-url}
-    
+
+  - name: budget_tracker-postgres-deployer
+    type: nodejs
+    path: gen/pg
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      tasks:
+        - name: deploy-to-postgresql
+          command: npm start
+    requires:
+      - name: budget_tracker-postgres
 
 resources:
   - name: budget_tracker-registry
@@ -62,3 +77,11 @@ resources:
           onUnSubscriptionAsync: true
           onUpdateDependenciesAsync: true
           callbackTimeoutMillis: 300000 # Increase if your deployments are taking longer than that
+  - name: postgres-test
+    type: org.cloudfoundry.existing-service
+  - name: budget_tracker-postgres
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: postgresql-db
+      service-plan: free
+

@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div style={{ maxHeight: '100vh', overflow: 'hidden' }}>
-      <ThemeProvider withToastContainer theme="sap_horizon" style={{ maxHeight: '100vh' }}>
+      <ThemeProvider withToastContainer theme="sap_horizon" style={{ maxHeight: '100vh', overflow:'hidden' }}>
         <ShellBar
           primaryTitle="Budget Tracker"
           style={{ height: '50px' }}
@@ -40,7 +40,7 @@ const App = () => {
         <Button icon="add" design="Transparent" text="" onClick={handleOpenDialog} style={{ position: 'absolute', top: '10px', right: '10px' }} />
 
 
-        <main style={{ paddingTop: '15px', background: '#edeff0', minHeight: 'calc(100vh - 66px)' }}>
+        <main style={{ paddingTop: '15px', background: '#edeff0', minHeight: 'calc(100vh - 66px)', overflowY: 'hidden' }}>
           <TransactionsList currentUser={currentUser} dataVersion={dataVersion} />
           {/* pass current user to transaction list to read filtered data */}
           <TransactionDialogTrigger
